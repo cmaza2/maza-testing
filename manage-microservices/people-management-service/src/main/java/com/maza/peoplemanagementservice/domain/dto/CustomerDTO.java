@@ -1,14 +1,13 @@
 package com.maza.peoplemanagementservice.domain.dto;
 
+import com.maza.peoplemanagementservice.domain.dto.request.Gender;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class CustomerDTO {
     private Long idCustomer;
     private String name;
-    private String gender;
+    private Gender gender;
     private int age;
     private String idCard;
     private String address;

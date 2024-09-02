@@ -1,6 +1,7 @@
 package com.maza.peoplemanagementservice.infrastructure.adapter.in;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maza.peoplemanagementservice.domain.dto.request.Gender;
 import com.maza.peoplemanagementservice.domain.entities.Customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,13 @@ class CustomerControllerTest {
 
         Customer customer = new Customer();
         customer.setName("Christian Maza");
-        customer.setPassword("123456");
+        customer.setPassword("123456789");
         customer.setStatus(true);
         customer.setAge(33);
         customer.setAddress("Catacocha");
         customer.setPhone("091011121");
-        customer.setIdCard("110506077");
-        customer.setGender("MASCULINO");
+        customer.setIdCard("1105060772");
+        customer.setGender(Gender.MASCULINO);
         customer.setIdCustomer(Long.valueOf(50));
         customer.setIdPerson(Long.valueOf(50));
         byte[] customerJson = objectMapper.writeValueAsBytes(customer);

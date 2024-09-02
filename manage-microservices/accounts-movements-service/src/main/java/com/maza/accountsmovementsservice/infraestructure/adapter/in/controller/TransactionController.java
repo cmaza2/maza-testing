@@ -1,37 +1,25 @@
 package com.maza.accountsmovementsservice.infraestructure.adapter.in.controller;
 
-
-import com.maza.accountsmovementsservice.aplication.services.AccountServices;
 import com.maza.accountsmovementsservice.aplication.services.TransactionServices;
-import com.maza.accountsmovementsservice.domain.dto.AccountDTO;
 import com.maza.accountsmovementsservice.domain.dto.TransactionDTO;
 import com.maza.accountsmovementsservice.domain.dto.request.TransactionRequestDTO;
-import com.maza.accountsmovementsservice.infraestructure.util.HelperUtilies;
 import com.maza.accountsmovementsservice.infraestructure.util.ResponseObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maza.accountsmovementsservice.infraestructure.dto.CustomerDTO;
 import com.maza.accountsmovementsservice.infraestructure.dto.TransactionsDTO;
-import com.maza.accountsmovementsservice.aplication.usecases.AccountsUseCase;
-import com.maza.accountsmovementsservice.domain.entities.Account;
-import com.maza.accountsmovementsservice.domain.entities.Transaction;
 import com.maza.accountsmovementsservice.infraestructure.adapter.out.GetCustomerService;
-import com.maza.accountsmovementsservice.infraestructure.util.TypeMovement;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/movimientos")
@@ -40,17 +28,16 @@ import java.util.stream.Collectors;
 public class TransactionController {
 
     private TransactionServices transactionServices;
-
-    private AccountServices accountServices;
     private GetCustomerService customerService;
     private KafkaTemplate kafkaTemplate;
+    @Value("${kafka.topic.name}")
+    private String topicName;
+
     @Autowired
     public TransactionController(TransactionServices transactionServices,
-                                 AccountServices accountServices,
                                  GetCustomerService customerService,
                                  KafkaTemplate kafkaTemplate) {
         this.transactionServices = transactionServices;
-        this.accountServices = accountServices;
         this.customerService = customerService;
         this.kafkaTemplate = kafkaTemplate;
     }
@@ -65,7 +52,7 @@ public class TransactionController {
 
     @PostMapping
     @ApiOperation(value = "createTransaction", notes = "Register a new transaction")
-    public ResponseEntity<Object> createTransaction(@RequestBody TransactionRequestDTO transactionRequestDTO) throws Exception {
+    public ResponseEntity<Object> createTransaction(@Valid @RequestBody TransactionRequestDTO transactionRequestDTO) throws Exception {
         TransactionDTO createdMovement = transactionServices.createTransaction(transactionRequestDTO);
         ResponseObject responseObject = new ResponseObject("ok", "Transaction created sucesfully", createdMovement);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseObject);
@@ -73,7 +60,7 @@ public class TransactionController {
 
     @PutMapping("/{id}")
     @ApiOperation(value = "updatetransaction", notes = "Update Transaction by id")
-    public ResponseEntity<ResponseObject> updatetransaction(@PathVariable Long id, @RequestBody TransactionRequestDTO movementRequestDTO) {
+    public ResponseEntity<ResponseObject> updatetransaction(@Valid @PathVariable Long id, @RequestBody TransactionRequestDTO movementRequestDTO) {
         return ResponseEntity.ok(new ResponseObject("ok", "Transaction with id " + id + " updated succesfully", transactionServices.updateTransaction(id,movementRequestDTO)));
     }
 
@@ -92,12 +79,12 @@ public class TransactionController {
     }
 
     @GetMapping("/enviar_reporte")
-    @ApiOperation(value = "getTransactionByUserAndDate", notes = "Gets all transactions made by date range and customer")
+    @ApiOperation(value = "sendAccountStatus", notes = "Gets all transactions made by date range and customer")
     public ResponseEntity<List<TransactionsDTO>> sendAccountStatus(@RequestParam String fechaInicial, @RequestParam String fechaFinal, @RequestParam String cliente) throws Exception {
         CustomerDTO customer = customerService.getCustomer(cliente);
-        List<TransactionsDTO> customers = transactionServices.getMovementsByUserAndDate(LocalDate.parse(fechaInicial), LocalDate.parse(fechaFinal), customer);
-        //kafkaTemplate.send();
-        return ResponseEntity.ok(customers);
+        List<TransactionsDTO> transactions = transactionServices.getMovementsByUserAndDate(LocalDate.parse(fechaInicial), LocalDate.parse(fechaFinal), customer);
+        kafkaTemplate.send(topicName,transactions.toString());
+        return ResponseEntity.ok(transactions);
     }
 
 }

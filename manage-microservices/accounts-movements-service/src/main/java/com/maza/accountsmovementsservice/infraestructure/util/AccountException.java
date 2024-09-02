@@ -1,7 +1,12 @@
 package com.maza.accountsmovementsservice.infraestructure.util;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AccountException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
@@ -9,27 +14,4 @@ public class AccountException extends RuntimeException {
     private HttpStatus errorCode;
     private String errorMessage;
 
-    public AccountException(HttpStatus errorCode, String errorMessage) {
-        this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
-    }
-
-    public AccountException() {
-    }
-
-    public HttpStatus getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(HttpStatus errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
 }

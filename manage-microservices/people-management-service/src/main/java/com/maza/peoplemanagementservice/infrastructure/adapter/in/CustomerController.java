@@ -6,6 +6,7 @@ import com.maza.peoplemanagementservice.domain.dto.request.CustomerRequestDTO;
 import com.maza.peoplemanagementservice.infrastructure.util.ResponseObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,19 +30,15 @@ public class CustomerController {
     }
     @PostMapping
     @ApiOperation(value = "createCustomer", notes = "Register a new customer")
-    public ResponseEntity<ResponseObject> createCustomer(@RequestBody CustomerRequestDTO customerRequestDTO){
+    public ResponseEntity<ResponseObject> createCustomer(@Valid @RequestBody CustomerRequestDTO customerRequestDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseObject("ok","Customer created sucesfully",customerService.save(customerRequestDTO)));
     }
     @PutMapping("/{id}")
     @ApiOperation(value = "updateCustomer", notes = "Update customer by Id")
-    public ResponseEntity<ResponseObject> updateCustomer(@PathVariable Long id, @RequestBody CustomerRequestDTO customerRequestDTO) {
+    public ResponseEntity<ResponseObject> updateCustomer(@Valid @PathVariable Long id, @RequestBody CustomerRequestDTO customerRequestDTO) {
         return ResponseEntity.ok(new ResponseObject("ok","Customer updated sucesfully", customerService.update(id,customerRequestDTO)));
     }
-    @PatchMapping("/{id}")
-    @ApiOperation(value = "modifyCustomer", notes = "Partially update customer by Id")
-    public ResponseEntity<ResponseObject> modifyCustomer(@PathVariable Long id, @RequestBody CustomerRequestDTO customerRequestDTO){
-        return ResponseEntity.ok(new ResponseObject("ok","Customer partially updated sucesfully",customerService.update(id,customerRequestDTO)));
-    }
+
     @DeleteMapping("/{id}")
     @ApiOperation(value = "deleteCustomer", notes = "Delete customer by Id")
     public  ResponseEntity<ResponseObject> deleteCustomer(@PathVariable Long id){

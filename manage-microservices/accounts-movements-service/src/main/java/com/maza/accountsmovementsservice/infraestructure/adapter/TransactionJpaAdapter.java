@@ -1,6 +1,5 @@
 package com.maza.accountsmovementsservice.infraestructure.adapter;
 
-import com.maza.accountsmovementsservice.domain.entities.Account;
 import com.maza.accountsmovementsservice.domain.entities.Transaction;
 import com.maza.accountsmovementsservice.domain.entities.Transactions;
 import com.maza.accountsmovementsservice.domain.port.TransactionPersistencePort;

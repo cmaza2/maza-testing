@@ -1,16 +1,16 @@
 package com.maza.peoplemanagementservice.infrastructure.adapter;
 
-import com.maza.peoplemanagementservice.application.mapper.CustomerDtoMapper;
+
 import com.maza.peoplemanagementservice.domain.entities.Customer;
 import com.maza.peoplemanagementservice.domain.port.CustomerPersistencePort;
 import com.maza.peoplemanagementservice.infrastructure.adapter.mapper.CustomerDboMapper;
 import com.maza.peoplemanagementservice.infrastructure.adapter.repository.CustomerRepository;
+import com.maza.peoplemanagementservice.infrastructure.util.UserException;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,7 +41,7 @@ public class CustomerJpaAdapter implements CustomerPersistencePort {
     public Customer findById(Long id) {
         var optionalUser = customerRepository.findById(id);
         if (optionalUser.isEmpty()){
-            throw new RuntimeException(ERROR_MESSAGE+" "+ id);
+            throw new UserException(HttpStatus.NOT_FOUND,ERROR_MESSAGE+" "+ id);
         }
 
         return customerDboMapper.toDomain(optionalUser.get());
@@ -65,7 +65,7 @@ public class CustomerJpaAdapter implements CustomerPersistencePort {
     public Customer findByIdentification(String id) {
         var optionalCustomer = customerRepository.findCustomerByIdCard(id);
         if (optionalCustomer.isEmpty()){
-            throw new RuntimeException(ERROR_MESSAGE+" "+ id);
+            throw new UserException(HttpStatus.NOT_FOUND,ERROR_MESSAGE+" "+ id);
         }
 
         return customerDboMapper.toDomain(optionalCustomer.get());

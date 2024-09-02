@@ -1,21 +1,10 @@
 package com.maza.accountsmovementsservice.infraestructure.util;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class CustomizeExceptionHandler {
+@Slf4j
+public class CustomizeExceptionHandler extends AbstractExceptionHandler{
 
-    /**
-     * Method that handle and exception ocurred
-     * @param ex  exception
-     *
-     * @return Json message of error.
-     */
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ResponseObject> handleException(Exception ex) {
-        ResponseObject responseObject = new ResponseObject("error",ex.getMessage(),"");
-        return ResponseEntity.ok(responseObject);
-    }
 }

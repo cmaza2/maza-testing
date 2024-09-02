@@ -153,7 +153,7 @@ public class TransactionServices implements TransactionUseCase {
         for (Transactions trx : transaction) {
             Account accountsClient=accountPersistencePort.findById(trx.getIdAccount());
             TransactionsDTO transactionsDTO = new TransactionsDTO();
-            transactionsDTO.setDate(Date.valueOf(trx.getDate()));
+            transactionsDTO.setDate(trx.getDate());
             transactionsDTO.setCustomer(customer.getName());
             transactionsDTO.setAccountNumber(accountsClient.getAccountNumber());
             transactionsDTO.setAccountType(accountsClient.getAccountType());

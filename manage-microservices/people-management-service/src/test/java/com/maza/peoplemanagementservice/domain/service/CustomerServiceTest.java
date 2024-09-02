@@ -2,6 +2,7 @@ package com.maza.peoplemanagementservice.domain.service;
 
 import com.maza.peoplemanagementservice.application.service.CustomerService;
 import com.maza.peoplemanagementservice.domain.dto.CustomerDTO;
+import com.maza.peoplemanagementservice.domain.dto.request.Gender;
 import com.maza.peoplemanagementservice.infrastructure.adapter.repository.CustomerRepository;
 import com.maza.peoplemanagementservice.infrastructure.entity.CustomerEntity;
 import org.junit.jupiter.api.Test;
@@ -41,14 +42,14 @@ class CustomerServiceTest {
         for(int i=0;i<2;i++) {
             CustomerEntity customerA = new CustomerEntity();
             customerA.setName("Christian Maza"+i);
-            customerA.setPassword("12345"+i);
+            customerA.setPassword("12345678"+i);
             customerA.setStatus(true);
             customerA.setAge(31+i);
             customerA.setAddress("Cuenca");
             customerA.setPhone("091011121"+i);
             customerA.setIdCard("110405069"+i);
             customerA.setIdCustomer(Long.valueOf(i+1));
-            customerA.setGender("MASCULINO");
+            customerA.setGender(Gender.MASCULINO);
             lstCustomer.add(customerA);
         }
         return lstCustomer;

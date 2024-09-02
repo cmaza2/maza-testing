@@ -17,8 +17,6 @@ import java.util.List;
 public class GetCustomerService {
     @Value("${customerService.url}")
     private String url;
-    @Value("${urlKafka}")
-    private String urlKafka;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -28,7 +26,7 @@ public class GetCustomerService {
      * @param id id customer
      * @return Customer information
      */
-    public CustomerDTO getCustomer(String id) throws Exception {
+    public CustomerDTO getCustomer(String id){
         String builder =  UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("id", id).toUriString();
         ResponseEntity<CustomerDTO> customerDTO =restTemplate.getForEntity(builder, CustomerDTO.class);
@@ -36,17 +34,7 @@ public class GetCustomerService {
         if(customerDTO.getBody()!=null){
             return customerDTO.getBody();
         } else {
-            throw new Exception("Customer record not found:: " + id);
+            throw new RuntimeException("Customer record not found:: " + id);
         }
-    }
-
-    /**
-     * Method that call a kafka producer
-     *
-     * @param transactionsDTO list of transactions
-     */
-    public void callProducer(String transactionsDTO) {
-        String responseBody = restTemplate.postForObject(urlKafka, transactionsDTO, String.class);
-        log.info("Responsa async call " + responseBody);
     }
 }

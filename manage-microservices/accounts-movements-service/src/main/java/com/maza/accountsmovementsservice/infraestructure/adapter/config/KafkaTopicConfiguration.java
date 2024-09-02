@@ -17,6 +17,8 @@ public class KafkaTopicConfiguration {
     int replics;
     @Value("${kafka.partitions}")
     int partitions;
+    @Value("${kafka.topic.name}")
+    String topicName;
 
     @Bean
     public NewTopic generateTopic(){
@@ -25,7 +27,7 @@ public class KafkaTopicConfiguration {
         config.put(TopicConfig.RETENTION_MS_CONFIG,"86400000");//tiempo que guarde los mensajes luego de eesto los elimina
         config.put(TopicConfig.SEGMENT_BYTES_CONFIG,"1073741824");//TAMAÑO MAXIMO del segmemtp en bytes 1 tera por defecto
         config.put(TopicConfig.MAX_MESSAGE_BYTES_CONFIG,"1000012");//tamanio maximo de cada mensaje por defecto 1mb
-        return TopicBuilder.name("transferTopic")
+        return TopicBuilder.name(topicName)
                 .replicas(replics)
                 .partitions(partitions)
                 .configs(config)

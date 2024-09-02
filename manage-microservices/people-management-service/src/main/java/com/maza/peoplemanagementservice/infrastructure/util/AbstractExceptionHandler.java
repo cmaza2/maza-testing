@@ -54,5 +54,18 @@ public abstract class AbstractExceptionHandler {
         ResponseObject responseObject = new ResponseObject("error", errorMessage, "");
         return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<ResponseObject> handleUserException(UserException ex) {
+        String errorMessage = ex.getErrorMessage();
+        ResponseObject responseObject = new ResponseObject("error", errorMessage, "");
+        return new ResponseEntity<>(responseObject, HttpStatus.NO_CONTENT);
+    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResponseObject> handleUserException(Exception ex) {
+        String errorMessage = ex.getMessage();
+        ResponseObject responseObject = new ResponseObject("error", errorMessage, "");
+        return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+    }
+
 }
 
