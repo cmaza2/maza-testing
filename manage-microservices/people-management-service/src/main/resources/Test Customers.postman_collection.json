@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "9f844c6f-3e49-4202-930f-e01d1c1c5ab2",
+		"name": "Test Customers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "4776556"
+	},
+	"item": [
+		{
+			"name": "1_listar todos los clientes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{URL}}:{{PORTPERSONS}}/api/clientes"
+			},
+			"response": []
+		},
+		{
+			"name": "1_CrearCliente",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Christian Maza\",\r\n    \"gender\":\"MASCULINO\",\r\n    \"age\":\"18\",\r\n    \"idCard\":\"1104637911\",\r\n    \"address\":\"Cuenca\",\r\n    \"phone\":\"0958922936\",\r\n    \"password\":\"12345678\",\r\n    \"status\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}:{{PORTPERSONS}}/api/clientes"
+			},
+			"response": []
+		},
+		{
+			"name": "1_Actualizar Cliente",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Christian Maza\",\r\n    \"gender\":\"MASCULINO\",\r\n    \"age\":\"\",\r\n    \"idCard\":\"1105791568\",\r\n    \"address\":\"Otavala sn y principal\",\r\n    \"phone\":\"098254785\",\r\n    \"password\":\"123456\",\r\n    \"status\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/clientes/9"
+			},
+			"response": []
+		},
+		{
+			"name": "1_Eliminar Cliente",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "{{URL}}:{{PORTPERSONS}}/api/clientes/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar Por documento de identidad",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}:{{PORTPERSONS}}/api/clientes/customers?id=1104637911",
+					"host": [
+						"{{URL}}"
+					],
+					"port": "{{PORTPERSONS}}",
+					"path": [
+						"api",
+						"clientes",
+						"customers"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1104637911"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

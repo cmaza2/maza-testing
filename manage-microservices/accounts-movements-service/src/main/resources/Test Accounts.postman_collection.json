@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "ba0191fe-b658-4b87-9212-ab42ee77dee5",
+		"name": "Test Accounts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "4776556"
+	},
+	"item": [
+		{
+			"name": "2_Crear Cuenta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountNumber\":\"2901085464\",\r\n    \"accountType\":\"Ahorros\",\r\n    \"initialBalance\":2000.00,\r\n    \"status\":true,\r\n    \"customer\":\"1104637911\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}:{{PORTTRANSACTION}}/api/cuentas"
+			},
+			"response": []
+		},
+		{
+			"name": "2_ActualizarCuenta",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountNumber\":\"478759\",\r\n    \"accountType\":\"Ahorros\",\r\n    \"initialBalance\":2000.00,\r\n    \"status\":true,\r\n    \"customer\":\"1101168475\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}:{{PORTTRANSACTION}}/api/cuentas/1"
+			},
+			"response": []
+		},
+		{
+			"name": "2_ActualizacionNumeroYTipoCuenta",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountNumber\":\"478758\",\r\n    \"accountType\":\"Corriente\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}:{{PORTTRANSACTION}}/api/cuentas/1"
+			},
+			"response": []
+		},
+		{
+			"name": "2_Eliminar Cuenta",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "{{URL}}:{{PORTTRANSACTION}}/api/cuentas/1"
+			},
+			"response": []
+		}
+	]
+}
