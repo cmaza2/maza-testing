@@ -20,8 +20,12 @@ import java.util.List;
 @Slf4j
 @Api(tags = "CustomerController", description = "Operations related to customers")
 public class CustomerController {
-    @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @GetMapping
     @ApiOperation(value = "getCustomers", notes = "List a register customers")

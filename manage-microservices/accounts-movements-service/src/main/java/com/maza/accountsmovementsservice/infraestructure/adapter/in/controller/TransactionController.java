@@ -55,6 +55,7 @@ public class TransactionController {
     public ResponseEntity<Object> createTransaction(@Valid @RequestBody TransactionRequestDTO transactionRequestDTO) throws Exception {
         TransactionDTO createdMovement = transactionServices.createTransaction(transactionRequestDTO);
         ResponseObject responseObject = new ResponseObject("ok", "Transaction created sucesfully", createdMovement);
+        log.info("Trama de respuesta: "+responseObject);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseObject);
     }
 
@@ -73,17 +74,17 @@ public class TransactionController {
 
     @GetMapping("/reportes")
     @ApiOperation(value = "getTransactionByUserAndDate", notes = "Gets all transactions made by date range and customer")
-    public ResponseEntity<List<TransactionsDTO>> getTransactionByUserAndDate(@RequestParam String fechaInicial, @RequestParam String fechaFinal, @RequestParam String cliente) throws Exception {
+    public ResponseEntity<List<TransactionsDTO>> getTransactionByUserAndDate(@RequestParam String fechaInicial, @RequestParam String fechaFinal, @RequestParam String cliente){
         CustomerDTO customer =  customerService.getCustomer(cliente);
         return ResponseEntity.ok(transactionServices.getMovementsByUserAndDate( LocalDate.parse(fechaInicial),   LocalDate.parse(fechaFinal),customer));
     }
 
     @GetMapping("/enviar_reporte")
     @ApiOperation(value = "sendAccountStatus", notes = "Gets all transactions made by date range and customer")
-    public ResponseEntity<List<TransactionsDTO>> sendAccountStatus(@RequestParam String fechaInicial, @RequestParam String fechaFinal, @RequestParam String cliente) throws Exception {
+    public ResponseEntity<List<TransactionsDTO>> sendAccountStatus(@RequestParam String fechaInicial, @RequestParam String fechaFinal, @RequestParam String cliente){
         CustomerDTO customer = customerService.getCustomer(cliente);
         List<TransactionsDTO> transactions = transactionServices.getMovementsByUserAndDate(LocalDate.parse(fechaInicial), LocalDate.parse(fechaFinal), customer);
-        kafkaTemplate.send(topicName,transactions.toString());
+        kafkaTemplate.send(topicName,transactions);
         return ResponseEntity.ok(transactions);
     }
 

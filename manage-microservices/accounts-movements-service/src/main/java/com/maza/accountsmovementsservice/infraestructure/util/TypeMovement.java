@@ -21,7 +21,7 @@ public class TypeMovement {
         } else if (tyoeMovement.toLowerCase().equals("deposito")) {
             return deposit(balance, value);
         } else {
-            throw new Exception("Type of movement invalid, Deposit or Withdrawal must be selected");
+            throw new RuntimeException("Type of movement invalid, Deposit or Withdrawal must be selected");
         }
     }
 

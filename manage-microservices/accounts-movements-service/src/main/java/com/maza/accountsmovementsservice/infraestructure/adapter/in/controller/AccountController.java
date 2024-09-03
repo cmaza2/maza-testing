@@ -3,7 +3,6 @@ package com.maza.accountsmovementsservice.infraestructure.adapter.in.controller;
 import com.maza.accountsmovementsservice.domain.dto.AccountDTO;
 import com.maza.accountsmovementsservice.domain.dto.request.AccountRequestDTO;
 import com.maza.accountsmovementsservice.infraestructure.util.ResponseObject;
-
 import com.maza.accountsmovementsservice.aplication.services.AccountServices;
 import com.maza.accountsmovementsservice.infraestructure.adapter.out.GetCustomerService;
 import com.maza.accountsmovementsservice.infraestructure.dto.CustomerDTO;
@@ -23,10 +22,14 @@ import java.util.List;
 @Slf4j
 @Api(tags = "AccountController", description = "Operations related to accounts")
 public class AccountController {
-    @Autowired
     private AccountServices accountServices;
-    @Autowired
     private GetCustomerService customerService;
+
+    @Autowired
+    public AccountController(AccountServices accountServices, GetCustomerService customerService) {
+        this.accountServices = accountServices;
+        this.customerService = customerService;
+    }
 
     @GetMapping
     @ApiOperation(value = "getAccounts", notes = "List a register accounts")
