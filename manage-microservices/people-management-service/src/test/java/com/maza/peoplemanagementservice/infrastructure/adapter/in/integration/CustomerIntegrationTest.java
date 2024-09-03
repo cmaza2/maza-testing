@@ -1,6 +1,8 @@
-package com.maza.peoplemanagementservice.infrastructure.adapter.in;
+package com.maza.peoplemanagementservice.infrastructure.adapter.in.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maza.peoplemanagementservice.domain.dto.CustomerDTO;
+import com.maza.peoplemanagementservice.domain.dto.request.CustomerRequestDTO;
 import com.maza.peoplemanagementservice.domain.dto.request.Gender;
 import com.maza.peoplemanagementservice.domain.entities.Customer;
 import org.junit.jupiter.api.Test;
@@ -14,9 +16,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 @SpringBootTest
 @AutoConfigureMockMvc
-class CustomerControllerTest {
+class CustomerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -24,17 +27,7 @@ class CustomerControllerTest {
     @Test
     public void createTransactionTest() throws Exception {
 
-        Customer customer = new Customer();
-        customer.setName("Christian Maza");
-        customer.setPassword("123456789");
-        customer.setStatus(true);
-        customer.setAge(33);
-        customer.setAddress("Catacocha");
-        customer.setPhone("091011121");
-        customer.setIdCard("1105060772");
-        customer.setGender(Gender.MASCULINO);
-        customer.setIdCustomer(Long.valueOf(50));
-        customer.setIdPerson(Long.valueOf(50));
+        CustomerRequestDTO customer = buildRequest();
         byte[] customerJson = objectMapper.writeValueAsBytes(customer);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/clientes")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -49,5 +42,17 @@ class CustomerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print());
+    }
+    private CustomerRequestDTO buildRequest(){
+        CustomerRequestDTO customer = new CustomerRequestDTO();
+        customer.setName("Christian Maza");
+        customer.setPassword("123456789");
+        customer.setStatus(true);
+        customer.setAge(33);
+        customer.setAddress("Catacocha");
+        customer.setPhone("091011121");
+        customer.setIdCard("1105060772");
+        customer.setGender(Gender.MASCULINO);
+        return customer;
     }
 }

@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  cont-db:
+    build:
+      context: mysql-db
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"
+    networks:
+      - my-network
+  cont-db2:
+    build:
+      context: mysql-db2
+      dockerfile: Dockerfile
+    ports:
+      - "3307:3306"
+    networks:
+      - my-network
+
+  springboot-customer:
+    build:
+      context: people-management
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+    depends_on:
+      - cont-db
+      #condition: service_healthy
+    environment:
+      WAIT_HOSTS: cont-db:3306
+networks:
+  my-network:
