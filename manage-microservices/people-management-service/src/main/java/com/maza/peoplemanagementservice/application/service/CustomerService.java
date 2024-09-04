@@ -114,7 +114,7 @@ public class CustomerService implements CustomerUseCase {
     public CustomerDTO findByIdentification(String idNumber) {
         var customer = customerPersistencePort.findByIdentification(idNumber);
         var customerResponseDTO = customerDtoMapper.toDto(customer);
-        log.info("Trama de respuesta buscar persona por identificacion {} : {}",idNumber);
+        log.info("Trama de respuesta buscar persona por identificacion {} : {}",idNumber,customerResponseDTO);
         return customerResponseDTO;
     }
 }

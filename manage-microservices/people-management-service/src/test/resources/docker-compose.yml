@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  cont-db:
+    build:
+      context: mysql-db
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"
+    networks:
+      - my-network
+  zookeeper1:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - my-network
+
+  kafka1:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper1
+    ports:
+      - "9092:9092"
+    networks:
+      - my-network
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+networks:
+  my-network:

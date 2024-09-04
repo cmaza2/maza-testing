@@ -56,7 +56,7 @@ public class CustomerController {
     @GetMapping("/customers")
     @ApiOperation(value = "findClienByIdCard", notes = "Find client by Id Number")
     public CustomerDTO findClienById(@RequestParam String id){
-        log.info("Buscar persona por cedula {}");
+        log.info("Buscar persona por cedula {}",id);
         return  customerService.findByIdentification(id);
     }
     @PostMapping("/statments")

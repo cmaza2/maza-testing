@@ -35,7 +35,7 @@ CREATE TABLE `taccounts` (
   `initial_balance` decimal(10,2) NOT NULL,
   `status` bit(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+insert into `taccounts` (`id_account`,`account_number`,`account_type`,`id_customer`,`initial_balance`,`status`) values (1,'2901020304','Ahorros',1,2000.00,true);
 
 -- --------------------------------------------------------
 

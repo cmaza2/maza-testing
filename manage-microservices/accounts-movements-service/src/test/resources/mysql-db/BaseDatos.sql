@@ -28,17 +28,6 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `tcustomers`
---
-
-CREATE TABLE `tcustomers` (
-  `id_customer` bigint(20) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `status` bit(1) NOT NULL,
-  `id_person` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 
 
 -- --------------------------------------------------------
@@ -56,7 +45,19 @@ CREATE TABLE `tpersons` (
   `name` varchar(255) NOT NULL,
   `phone` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `tpersons` (`id_person`, `address`, `age`,`gender`,`id_card`,`name`,`phone`) values(1,'CUENCA',30,'MASCULINO','1101020304','ALBERTO CABRERA','0991929394');
+--
+-- Estructura de tabla para la tabla `tcustomers`
+--
 
+CREATE TABLE `tcustomers` (
+                              `id_customer` bigint(20) NOT NULL,
+                              `password` varchar(255) NOT NULL,
+                              `status` bit(1) NOT NULL,
+                              `id_person` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+insert into `tcustomers` (`id_customer`, `password`,`status`,`id_person`) values (1,'PATIOTO.123',1,1);
 
 -- --------------------------------------------------------
 

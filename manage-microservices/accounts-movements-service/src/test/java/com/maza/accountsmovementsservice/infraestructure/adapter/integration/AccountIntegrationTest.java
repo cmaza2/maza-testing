@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -18,23 +19,24 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 @SpringBootTest
 @AutoConfigureMockMvc
-class AccountIntegrationTest {
+@ActiveProfiles("test")
+class AccountIntegrationTest extends SetupDockerContainerTest{
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void createTransaction() throws Exception {
+    public void createAccounting() throws Exception {
         AccountRequestDTO accountRequestDTO = buildTransactionRequest();
         mockMvc.perform(MockMvcRequestBuilders.post("/api/cuentas")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapToJson(accountRequestDTO)))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status", equalTo("ok")))
                 .andDo(print());
     }
     @Test
-    public void createTransactionError() throws Exception {
+    public void createAccountingError() throws Exception {
         AccountRequestDTO accountRequestDTO = buildIncomplateRequest();
         mockMvc.perform(MockMvcRequestBuilders.post("/api/cuentas")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -54,17 +56,17 @@ class AccountIntegrationTest {
 
     private AccountRequestDTO buildTransactionRequest() {
        AccountRequestDTO accountRequestDTO = new AccountRequestDTO();
-        accountRequestDTO.setAccountNumber("2901085464");
-        accountRequestDTO.setCustomer("1104637911");
+        accountRequestDTO.setAccountNumber("2905060708");
+        accountRequestDTO.setCustomer("1101020304");
         accountRequestDTO.setStatus(true);
-        accountRequestDTO.setAccountType("Corriente");
+        accountRequestDTO.setAccountType("Ahorros");
         accountRequestDTO.setInitialBalance(new BigDecimal(2000));
         return accountRequestDTO;
     }
     private AccountRequestDTO buildIncomplateRequest() {
         AccountRequestDTO accountRequestDTO = new AccountRequestDTO();
-        accountRequestDTO.setAccountNumber("2901085464");
-        accountRequestDTO.setCustomer("1104637911");
+        accountRequestDTO.setAccountNumber("2905060708");
+        accountRequestDTO.setCustomer("1101020304");
         accountRequestDTO.setStatus(true);
         return accountRequestDTO;
     }
