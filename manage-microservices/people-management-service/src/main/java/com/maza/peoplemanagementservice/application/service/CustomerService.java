@@ -2,16 +2,18 @@ package com.maza.peoplemanagementservice.application.service;
 
 import com.maza.peoplemanagementservice.application.mapper.CustomerDtoMapper;
 import com.maza.peoplemanagementservice.application.mapper.CustomerRequestMapper;
+import com.maza.peoplemanagementservice.application.usecases.CustomerUseCase;
 import com.maza.peoplemanagementservice.domain.port.CustomerPersistencePort;
 import com.maza.peoplemanagementservice.domain.dto.CustomerDTO;
-import com.maza.peoplemanagementservice.application.usecases.CustomerUseCase;
 import com.maza.peoplemanagementservice.domain.dto.request.CustomerRequestDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CustomerService implements CustomerUseCase {
 
     private final CustomerPersistencePort customerPersistencePort;
@@ -40,7 +42,9 @@ public class CustomerService implements CustomerUseCase {
     public CustomerDTO save(CustomerRequestDTO customerRequestDTO) {
         var customer = customerRequestMapper.toDomain(customerRequestDTO);
         var customerCreated = customerPersistencePort.save(customer);
-        return customerDtoMapper.toDto(customerCreated);
+        var customerResponseDTO = customerDtoMapper.toDto(customerCreated);
+        log.info("Trama de respuesta crear persona: ",customerResponseDTO);
+        return customerResponseDTO;
     }
     /**
      * Method that calls the port and create or update a customer
@@ -67,7 +71,9 @@ public class CustomerService implements CustomerUseCase {
     @Override
     public CustomerDTO findById(Long id) {
         var customer = customerPersistencePort.findById(id);
-        return customerDtoMapper.toDto(customer);
+        var customerResponseDTO = customerDtoMapper.toDto(customer);
+        log.info("Trama de respuesta buscar persona por id: ",id,customerResponseDTO);
+        return customerResponseDTO;
     }
 
     /**
@@ -95,6 +101,7 @@ public class CustomerService implements CustomerUseCase {
         if(!customer.getIdCard().isEmpty()){
             throw new RuntimeException(String.format(ERROR_MESSAGE, customer.getName()));
         }
+        log.info("Trama de respuesta eliminar persona por id: ",id);
     }
 
     /**
@@ -106,6 +113,8 @@ public class CustomerService implements CustomerUseCase {
     @Override
     public CustomerDTO findByIdentification(String idNumber) {
         var customer = customerPersistencePort.findByIdentification(idNumber);
-        return customerDtoMapper.toDto(customer);
+        var customerResponseDTO = customerDtoMapper.toDto(customer);
+        log.info("Trama de respuesta buscar persona por identificacion {} : {}",idNumber);
+        return customerResponseDTO;
     }
 }

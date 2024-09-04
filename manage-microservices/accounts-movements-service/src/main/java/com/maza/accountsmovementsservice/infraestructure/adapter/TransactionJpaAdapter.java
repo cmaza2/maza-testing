@@ -4,7 +4,7 @@ import com.maza.accountsmovementsservice.domain.entities.Transaction;
 import com.maza.accountsmovementsservice.domain.entities.Transactions;
 import com.maza.accountsmovementsservice.domain.port.TransactionPersistencePort;
 import com.maza.accountsmovementsservice.domain.repository.TransactionRepository;
-import com.maza.accountsmovementsservice.infraestructure.dto.CustomerDTO;
+import com.maza.accountsmovementsservice.domain.dto.CustomerDTO;
 import com.maza.accountsmovementsservice.infraestructure.mapper.TransactionDboMapper;
 import com.maza.accountsmovementsservice.infraestructure.util.TransactionException;
 import jakarta.transaction.Transactional;

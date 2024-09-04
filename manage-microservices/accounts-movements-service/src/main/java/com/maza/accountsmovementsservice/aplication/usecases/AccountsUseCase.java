@@ -1,19 +1,19 @@
 package com.maza.accountsmovementsservice.aplication.usecases;
 
-import com.maza.accountsmovementsservice.domain.dto.AccountDTO;
+import com.maza.accountsmovementsservice.domain.dto.Account;
 import com.maza.accountsmovementsservice.domain.dto.request.AccountRequestDTO;
-import com.maza.accountsmovementsservice.infraestructure.dto.CustomerDTO;
+import com.maza.accountsmovementsservice.domain.dto.CustomerDTO;
 
 import java.util.List;
 
 public interface AccountsUseCase {
-    AccountDTO create(AccountRequestDTO accountRequestDTO, CustomerDTO customerDTO);
-    AccountDTO update(Long id,Long idCustomer,AccountRequestDTO accountRequestDTO);
-    AccountDTO getAccountById(Long accountId);
+    Account create(AccountRequestDTO accountRequestDTO, CustomerDTO customerDTO);
+    Account update(Long id, Long idCustomer, AccountRequestDTO accountRequestDTO);
+    Account getAccountById(Long accountId);
     void deleteAccount(Long accountId);
-    List<AccountDTO> getAccounts();
-    List<AccountDTO> findByIdentification(String id);
-    AccountDTO getAccountInformation(String accountNumber);
+    List<Account> getAccounts();
+    List<Account> findByIdentification(String id);
+    Account getAccountInformation(String accountNumber);
 
 
 }

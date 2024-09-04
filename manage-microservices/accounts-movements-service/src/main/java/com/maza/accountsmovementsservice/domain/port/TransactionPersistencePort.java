@@ -2,7 +2,7 @@ package com.maza.accountsmovementsservice.domain.port;
 
 import com.maza.accountsmovementsservice.domain.entities.Transaction;
 import com.maza.accountsmovementsservice.domain.entities.Transactions;
-import com.maza.accountsmovementsservice.infraestructure.dto.CustomerDTO;
+import com.maza.accountsmovementsservice.domain.dto.CustomerDTO;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -35,17 +35,20 @@ public class CustomerController {
     @PostMapping
     @ApiOperation(value = "createCustomer", notes = "Register a new customer")
     public ResponseEntity<ResponseObject> createCustomer(@Valid @RequestBody CustomerRequestDTO customerRequestDTO){
+        log.info("Trama de entrada crear cliente: {}",customerRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseObject("ok","Customer created sucesfully",customerService.save(customerRequestDTO)));
     }
     @PutMapping("/{id}")
     @ApiOperation(value = "updateCustomer", notes = "Update customer by Id")
     public ResponseEntity<ResponseObject> updateCustomer(@Valid @PathVariable Long id, @RequestBody CustomerRequestDTO customerRequestDTO) {
+        log.info("Id de persona a actualizar: {}",id);
         return ResponseEntity.ok(new ResponseObject("ok","Customer updated sucesfully", customerService.update(id,customerRequestDTO)));
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "deleteCustomer", notes = "Delete customer by Id")
     public  ResponseEntity<ResponseObject> deleteCustomer(@PathVariable Long id){
+        log.info("Id de persona a eliminar: {}",id);
         customerService.deleteById(id);
         return ResponseEntity.ok(new ResponseObject("ok","Customer deleted sucesfully", ""));
 
@@ -53,6 +56,7 @@ public class CustomerController {
     @GetMapping("/customers")
     @ApiOperation(value = "findClienByIdCard", notes = "Find client by Id Number")
     public CustomerDTO findClienById(@RequestParam String id){
+        log.info("Buscar persona por cedula {}");
         return  customerService.findByIdentification(id);
     }
     @PostMapping("/statments")

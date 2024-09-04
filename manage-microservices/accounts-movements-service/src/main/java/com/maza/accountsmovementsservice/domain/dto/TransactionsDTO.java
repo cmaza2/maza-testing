@@ -19,5 +19,18 @@ public class TransactionsDTO {
     BigDecimal value;
     BigDecimal balance;
 
-
+    @Override
+    public String toString() {
+        return "TransactionsDTO{" +
+                "date=" + date +
+                ", customer='" + customer + '\'' +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", accountType='" + accountType + '\'' +
+                ", initialBalance=" + initialBalance +
+                ", status=" + status +
+                ", transactionType='" + transactionType + '\'' +
+                ", value=" + value +
+                ", balance=" + balance +
+                '}';
+    }
 }

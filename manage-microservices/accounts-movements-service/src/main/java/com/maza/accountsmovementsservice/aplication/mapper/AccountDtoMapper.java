@@ -1,8 +1,7 @@
 package com.maza.accountsmovementsservice.aplication.mapper;
 
 
-import com.maza.accountsmovementsservice.domain.dto.AccountDTO;
-import com.maza.accountsmovementsservice.domain.entities.Account;
+import com.maza.accountsmovementsservice.domain.dto.Account;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -14,5 +13,5 @@ public interface AccountDtoMapper {
     @Mapping(source = "accountType", target = "accountType")
     @Mapping(source = "initialBalance", target = "initialBalance")
     @Mapping(source = "status", target = "status")
-    AccountDTO toDto(Account domain);
+    Account toDto(com.maza.accountsmovementsservice.domain.entities.Account domain);
 }

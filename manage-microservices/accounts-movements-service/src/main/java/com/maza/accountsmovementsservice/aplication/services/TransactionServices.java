@@ -4,26 +4,27 @@ package com.maza.accountsmovementsservice.aplication.services;
 import com.maza.accountsmovementsservice.aplication.mapper.TransactionDtoMapper;
 import com.maza.accountsmovementsservice.aplication.mapper.TransactionRequestMapper;
 import com.maza.accountsmovementsservice.domain.dto.TransactionDTO;
+import com.maza.accountsmovementsservice.domain.dto.TransactionsDTO;
 import com.maza.accountsmovementsservice.domain.dto.request.TransactionRequestDTO;
 import com.maza.accountsmovementsservice.domain.entities.Account;
 import com.maza.accountsmovementsservice.domain.entities.Transactions;
 import com.maza.accountsmovementsservice.domain.port.AccountPersistencePort;
 import com.maza.accountsmovementsservice.domain.port.TransactionPersistencePort;
-import com.maza.accountsmovementsservice.infraestructure.dto.CustomerDTO;
-import com.maza.accountsmovementsservice.infraestructure.dto.TransactionsDTO;
+import com.maza.accountsmovementsservice.domain.dto.CustomerDTO;
 import com.maza.accountsmovementsservice.aplication.usecases.TransactionUseCase;
-import com.maza.accountsmovementsservice.infraestructure.util.TypeMovement;
+import com.maza.accountsmovementsservice.aplication.util.TypeMovement;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class TransactionServices implements TransactionUseCase {
     private TransactionPersistencePort transactionPersistencePort;
     private AccountPersistencePort accountPersistencePort;
@@ -64,7 +65,9 @@ public class TransactionServices implements TransactionUseCase {
     @Override
     public TransactionDTO getTransactionById(Long transactionId) {
         var transaction = transactionPersistencePort.findById(transactionId);
-        return transactionDtoMapper.toDto(transaction);
+        var transactionRequestDTO = transactionDtoMapper.toDto(transaction);
+        log.info("Trama de respuesta buscar transaccion por id {}: {}",transactionId,transactionRequestDTO);
+        return transactionRequestDTO;
     }
 
     /**
@@ -88,7 +91,9 @@ public class TransactionServices implements TransactionUseCase {
         transaction.setValue(transaction.getTransactionType().toLowerCase()
                 .equals("retiro")?new BigDecimal("-"+transaction.getValue()):transaction.getValue());
         var transactionCreated = transactionPersistencePort.save(transaction);
-        return transactionDtoMapper.toDto(transactionCreated);
+        var transactionResponseDTO=transactionDtoMapper.toDto(transactionCreated);
+        log.info("Trama de salida crear movimiento: {}",transactionResponseDTO);
+        return transactionResponseDTO;
     }
 
     /**
@@ -105,7 +110,9 @@ public class TransactionServices implements TransactionUseCase {
         transaction.setIdTransaction(id);
         transaction.setIdAccount(account.getIdAccount());
         var transactionCreated = transactionPersistencePort.save(transaction);
-        return transactionDtoMapper.toDto(transactionCreated);
+        var transactionResponseDTO = transactionDtoMapper.toDto(transactionCreated);
+        log.info("Trama de salida actualizar movimiento por id: id={}, trama= {}",id,transactionResponseDTO);
+        return transactionResponseDTO;
     }
 
     /**
@@ -129,6 +136,7 @@ public class TransactionServices implements TransactionUseCase {
     public BigDecimal getBalance(String accountNumber) {
         var transaction = transactionPersistencePort.findFirstByAccountNumberOrderByidDesc( accountPersistencePort.getAccountInformation(accountNumber).getIdAccount());
         BigDecimal balance = transaction != null ? transaction.getBalance() : null;
+        log.info("Saldo de cuenta {} :",balance);
         return balance;
     }
 
@@ -164,6 +172,9 @@ public class TransactionServices implements TransactionUseCase {
             transactionsDTO.setBalance(trx.getBalance());
             lstTransaction.add(transactionsDTO);
         }
+        log.info("Transacciones realizadas por cliente {}:", lstTransaction.stream()
+                .map(TransactionsDTO::toString)
+                .collect(Collectors.joining("; ")));
         return lstTransaction;
     }
 }
