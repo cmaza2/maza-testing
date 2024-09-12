@@ -63,7 +63,9 @@ CREATE TABLE `ttransactions` (
 ALTER TABLE `taccounts`
   ADD PRIMARY KEY (`id_account`);
 
-
+alter table `taccounts`
+    add constraint taccounts_uk
+        unique (`account_number`);
 --
 -- Indices de la tabla `ttransactions`
 --
@@ -95,6 +97,7 @@ ALTER TABLE `ttransactions`
 ALTER TABLE `ttransactions`
   ADD CONSTRAINT `ttransactions_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `taccounts` (`id_account`);
 COMMIT;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -1,9 +1,6 @@
 package com.maza.peoplemanagementservice.domain.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -13,6 +10,7 @@ public class CustomerRequestDTO {
     private String name;
     @NotNull(message = "Gender is required")
     private Gender gender;
+    @Min(value = 16, message = "The age must be 16 or higger")
     private int age;
     @Pattern(regexp = "^[0-9]+$", message = "The id card must only contain numbers")
     @Size(min = 10, max = 10, message = "IdCard must be 10 characters long")

@@ -2,6 +2,8 @@ package com.maza.accountsmovementsservice.aplication.util;
 
 
 import com.maza.accountsmovementsservice.domain.entities.Account;
+import com.maza.accountsmovementsservice.infraestructure.util.TransactionException;
+import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 
@@ -21,7 +23,7 @@ public class TypeMovement {
         } else if (tyoeMovement.toLowerCase().equals("deposito")) {
             return deposit(balance, value);
         } else {
-            throw new RuntimeException("Type of movement invalid, Deposit or Withdrawal must be selected");
+            throw new TransactionException(HttpStatus.BAD_REQUEST,"Type of movement invalid, Deposit or Withdrawal must be selected");
         }
     }
 
@@ -48,7 +50,7 @@ public class TypeMovement {
         if (balance.compareTo(value) >= 0) {
             return balance.subtract(value);
         } else {
-            throw new RuntimeException("Unavailable balance");
+            throw new TransactionException(HttpStatus.BAD_REQUEST,"Unavailable balance");
         }
     }
 

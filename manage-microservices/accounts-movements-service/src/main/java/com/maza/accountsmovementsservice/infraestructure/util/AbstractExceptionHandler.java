@@ -63,14 +63,15 @@ public abstract class AbstractExceptionHandler {
         String errorMessage = ex.getErrorMessage();
         ResponseObject responseObject = new ResponseObject("error", errorMessage, "");
         log.error("Error en las cuentas: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);
-    }
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ResponseObject> handleUserException(RuntimeException ex) {
-        String errorMessage = ex.getMessage();
-        ResponseObject responseObject = new ResponseObject("error", errorMessage, "");
-        log.error("Error en tiempo de ejecucion: {}", ex.getMessage(), ex);
         return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(TransactionException.class)
+    public ResponseEntity<ResponseObject> handleUserException(TransactionException ex) {
+        String errorMessage = ex.getErrorMessage();
+        ResponseObject responseObject = new ResponseObject("error", errorMessage, "");
+        log.error("Error en la transaccion {} {}", ex.getMessage(), ex);
+        return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+    }
+
 }
 

@@ -21,5 +21,6 @@ public class KafkaMessageListener {
     public void listen(String message) {
        log.info("Received message from topic " + topicName + ": " + message);
 
+
     }
 }

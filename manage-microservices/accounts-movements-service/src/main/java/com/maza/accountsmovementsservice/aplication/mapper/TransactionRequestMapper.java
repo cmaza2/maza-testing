@@ -10,7 +10,6 @@ import org.mapstruct.Mapping;
 public interface TransactionRequestMapper {
     @Mapping(source = "idAccount", target = "idAccount")
     @Mapping(source = "account", target = "account")
-    @Mapping(source = "date", target = "date")
     @Mapping(source = "transactionType", target = "transactionType")
     @Mapping(source = "value", target = "value")
     Transaction toDomain(TransactionRequestDTO account);

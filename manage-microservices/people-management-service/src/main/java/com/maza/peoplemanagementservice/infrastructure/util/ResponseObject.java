@@ -1,10 +1,8 @@
 package com.maza.peoplemanagementservice.infrastructure.util;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class ResponseObject {
 
     private String status;

@@ -43,7 +43,7 @@ public class CustomerService implements CustomerUseCase {
         var customer = customerRequestMapper.toDomain(customerRequestDTO);
         var customerCreated = customerPersistencePort.save(customer);
         var customerResponseDTO = customerDtoMapper.toDto(customerCreated);
-        log.info("Trama de respuesta crear persona: ",customerResponseDTO);
+        log.info("Trama de respuesta crear persona: {}",customerResponseDTO);
         return customerResponseDTO;
     }
     /**
@@ -59,7 +59,9 @@ public class CustomerService implements CustomerUseCase {
         customer.setIdPerson(id);
         customer.setIdCustomer(customerExist.getIdCustomer());
         var customerUpdate = customerPersistencePort.update(customer);
-        return customerDtoMapper.toDto(customerUpdate);
+        var customerMapper= customerDtoMapper.toDto(customerUpdate);
+        log.info("Trama de respuesta actualizar persona por id: id={},tramaRespuesta={}",id,customerMapper);
+        return customerMapper;
     }
 
     /**
@@ -72,7 +74,7 @@ public class CustomerService implements CustomerUseCase {
     public CustomerDTO findById(Long id) {
         var customer = customerPersistencePort.findById(id);
         var customerResponseDTO = customerDtoMapper.toDto(customer);
-        log.info("Trama de respuesta buscar persona por id: ",id,customerResponseDTO);
+        log.info("Trama de respuesta buscar persona por id: id={},trama={}",id,customerResponseDTO);
         return customerResponseDTO;
     }
 
@@ -101,7 +103,8 @@ public class CustomerService implements CustomerUseCase {
         if(!customer.getIdCard().isEmpty()){
             throw new RuntimeException(String.format(ERROR_MESSAGE, customer.getName()));
         }
-        log.info("Trama de respuesta eliminar persona por id: ",id);
+        customerPersistencePort.deleteById(id);
+        log.info("Trama de respuesta, id de persona eliminada: {}",id);
     }
 
     /**

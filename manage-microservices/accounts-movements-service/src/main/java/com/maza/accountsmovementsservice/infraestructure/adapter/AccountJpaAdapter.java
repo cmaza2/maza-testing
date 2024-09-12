@@ -3,12 +3,14 @@ package com.maza.accountsmovementsservice.infraestructure.adapter;
 import com.maza.accountsmovementsservice.domain.entities.Account;
 import com.maza.accountsmovementsservice.domain.port.AccountPersistencePort;
 import com.maza.accountsmovementsservice.domain.repository.AccountRepository;
+import com.maza.accountsmovementsservice.infraestructure.entities.AccountEntity;
 import com.maza.accountsmovementsservice.infraestructure.mapper.AccountDboMapper;
 import com.maza.accountsmovementsservice.infraestructure.util.AccountException;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,9 +26,10 @@ public class AccountJpaAdapter implements AccountPersistencePort {
         this.accountDboMapper = accountDboMapper;
     }
     @Override
-    public Account save(Account accountDomain) {
+    public Account save(Account accountDomain){
         var userToSave = accountDboMapper.toDbo(accountDomain);
-        var userSaved = accountRepository.save(userToSave);
+        var userSaved =new AccountEntity();
+        userSaved = accountRepository.save(userToSave);
         return accountDboMapper.toDomain(userSaved);
     }
     @Override
@@ -75,7 +78,7 @@ public class AccountJpaAdapter implements AccountPersistencePort {
     public Account getAccountInformation(String accountNumber) {
         var optionalAccount = accountRepository.findAccountByAccountNumber(accountNumber);
         if (optionalAccount.isEmpty()){
-            throw new AccountException(HttpStatus.NOT_FOUND,
+            throw new AccountException(HttpStatus.BAD_REQUEST,
                     String.format(MESSAGE_ACCOUNT, accountNumber));
         }
 

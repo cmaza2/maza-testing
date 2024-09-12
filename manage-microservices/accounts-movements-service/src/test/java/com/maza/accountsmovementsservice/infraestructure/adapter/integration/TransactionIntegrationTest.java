@@ -62,7 +62,6 @@ class TransactionIntegrationTest extends SetupDockerContainerTest{
         TransactionRequestDTO transactionRequestDTO = new TransactionRequestDTO();
         transactionRequestDTO.setAccount("2901020304");
         transactionRequestDTO.setTransactionType("Deposito");
-        transactionRequestDTO.setDate(LocalDate.now());
         transactionRequestDTO.setValue(new BigDecimal("500"));
         return transactionRequestDTO;
     }
@@ -70,7 +69,6 @@ class TransactionIntegrationTest extends SetupDockerContainerTest{
     private TransactionRequestDTO buildIncomplateRequest() {
         TransactionRequestDTO transactionRequestDTO = new TransactionRequestDTO();
         transactionRequestDTO.setTransactionType("Deposito");
-        transactionRequestDTO.setDate(LocalDate.now());
         transactionRequestDTO.setValue(new BigDecimal("500"));
         return transactionRequestDTO;
     }

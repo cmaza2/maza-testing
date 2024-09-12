@@ -1,6 +1,7 @@
 package com.maza.accountsmovementsservice.infraestructure.adapter.controller;
 
 import com.maza.accountsmovementsservice.aplication.services.TransactionServices;
+import com.maza.accountsmovementsservice.aplication.usecases.TransactionUseCase;
 import com.maza.accountsmovementsservice.domain.dto.TransactionDTO;
 import com.maza.accountsmovementsservice.domain.dto.request.TransactionRequestDTO;
 import com.maza.accountsmovementsservice.infraestructure.util.ResponseObject;
@@ -27,17 +28,17 @@ import java.util.List;
 @Slf4j
 public class TransactionController {
 
-    private TransactionServices transactionServices;
+    private TransactionUseCase transactionUseCase;
     private GetCustomerService customerService;
     private KafkaTemplate kafkaTemplate;
     @Value("${kafka.topic.name}")
     private String topicName;
 
     @Autowired
-    public TransactionController(TransactionServices transactionServices,
+    public TransactionController(TransactionServices transactionUseCase,
                                  GetCustomerService customerService,
                                  KafkaTemplate kafkaTemplate) {
-        this.transactionServices = transactionServices;
+        this.transactionUseCase = transactionUseCase;
         this.customerService = customerService;
         this.kafkaTemplate = kafkaTemplate;
     }
@@ -46,7 +47,7 @@ public class TransactionController {
     @GetMapping
     @ApiOperation(value = "getTransactions", notes = "gets all transactions made")
     public ResponseEntity<List<TransactionDTO>> getTransactions() {
-        List<TransactionDTO> transactions = transactionServices.getTransactions();
+        List<TransactionDTO> transactions = transactionUseCase.getTransactions();
         log.info("Trama de salida: {}",transactions);
         return ResponseEntity.ok(transactions);
     }
@@ -55,7 +56,7 @@ public class TransactionController {
     @ApiOperation(value = "createTransaction", notes = "Register a new transaction")
     public ResponseEntity<Object> createTransaction(@Valid @RequestBody TransactionRequestDTO transactionRequestDTO) throws Exception {
         log.info("Trama de entrada: {}",transactionRequestDTO);
-        TransactionDTO createdMovement = transactionServices.createTransaction(transactionRequestDTO);
+        TransactionDTO createdMovement = transactionUseCase.createTransaction(transactionRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseObject("ok", "Transaction created sucesfully", createdMovement));
     }
 
@@ -63,14 +64,21 @@ public class TransactionController {
     @ApiOperation(value = "updatetransaction", notes = "Update Transaction by id")
     public ResponseEntity<ResponseObject> updatetransaction(@Valid @PathVariable Long id, @RequestBody TransactionRequestDTO transactionRequestDTO) {
         log.info("Id y trama de movimiento a actualizar: id={}, trama={}", id, transactionRequestDTO);
-        return ResponseEntity.ok(new ResponseObject("ok", "Transaction with id " + id + " updated succesfully", transactionServices.updateTransaction(id,transactionRequestDTO)));
+        return ResponseEntity.ok(new ResponseObject("ok", "Transaction with id " + id + " updated succesfully", transactionUseCase.updateTransaction(id,transactionRequestDTO)));
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "deleteTransaction", notes = "Delete transaction by id")
     public ResponseEntity<ResponseObject> deleteTransaction(@PathVariable Long id) {
         log.info("Id de movimiento a eliminar: id={}", id);
-        transactionServices.deleteTransaction(id);
+        transactionUseCase.deleteTransaction(id);
+        return ResponseEntity.ok(new ResponseObject("ok", "Transaction with id " + id + " deleted correctly", ""));
+    }
+    @GetMapping("/{id}")
+    @ApiOperation(value = "getTransactionById", notes = "Get transaction by id")
+    public ResponseEntity<ResponseObject> getTransactionById(@PathVariable Long id) {
+        log.info("Id de movimiento a eliminar: id={}", id);
+        transactionUseCase.getTransactionById(id);
         return ResponseEntity.ok(new ResponseObject("ok", "Transaction with id " + id + " deleted correctly", ""));
     }
 
@@ -79,7 +87,7 @@ public class TransactionController {
     public ResponseEntity<List<TransactionsDTO>> getTransactionByUserAndDate(@RequestParam String fechaInicial, @RequestParam String fechaFinal, @RequestParam String cliente){
         log.info("Datos de entrada para reporteria de movimientos:{],{},{}",fechaInicial,fechaFinal,cliente);
         CustomerDTO customer =  customerService.getCustomer(cliente);
-        return ResponseEntity.ok(transactionServices.getMovementsByUserAndDate( LocalDate.parse(fechaInicial),   LocalDate.parse(fechaFinal),customer));
+        return ResponseEntity.ok(transactionUseCase.getMovementsByUserAndDate( LocalDate.parse(fechaInicial),   LocalDate.parse(fechaFinal),customer));
     }
 
     @GetMapping("/enviar_reporte")
@@ -87,7 +95,7 @@ public class TransactionController {
     public ResponseEntity<List<TransactionsDTO>> sendAccountStatus(@RequestParam String fechaInicial, @RequestParam String fechaFinal, @RequestParam String cliente){
         log.info("Datos de entrada para enviar reporteria de movimientos:{],{},{}",fechaInicial,fechaFinal,cliente);
         CustomerDTO customer = customerService.getCustomer(cliente);
-        List<TransactionsDTO> transactions = transactionServices.getMovementsByUserAndDate(LocalDate.parse(fechaInicial), LocalDate.parse(fechaFinal), customer);
+        List<TransactionsDTO> transactions = transactionUseCase.getMovementsByUserAndDate(LocalDate.parse(fechaInicial), LocalDate.parse(fechaFinal), customer);
         kafkaTemplate.send(topicName,transactions);
         return ResponseEntity.ok(transactions);
     }

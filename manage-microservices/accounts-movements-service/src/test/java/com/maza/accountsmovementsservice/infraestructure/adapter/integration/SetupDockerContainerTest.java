@@ -19,9 +19,9 @@ public abstract class SetupDockerContainerTest {
     public static void setUp() {
         // Define the Docker Compose container
         composeContainer = new DockerComposeContainer<>(new File("src/test/resources/docker-compose.yml"))
-                .withExposedService("cont-db2_1", 3306, Wait.forListeningPort().withStartupTimeout(Duration.ofMinutes(2)))
-                .withExposedService("cont-db_1", 3306, Wait.forListeningPort().withStartupTimeout(Duration.ofMinutes(2)))
-                .withExposedService("springboot-customer_1", 8083, Wait.forListeningPort().withStartupTimeout(Duration.ofMinutes(2)));
+                .withExposedService("cont-db2_1", 3306, Wait.forListeningPort().withStartupTimeout(Duration.ofMinutes(3)))
+                .withExposedService("cont-db_1", 3306, Wait.forListeningPort().withStartupTimeout(Duration.ofMinutes(3)))
+                .withExposedService("springboot-customer_1", 8083, Wait.forListeningPort().withStartupTimeout(Duration.ofMinutes(3)));
         composeContainer.start();
     }
     @AfterAll

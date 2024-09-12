@@ -1,6 +1,7 @@
 package com.maza.peoplemanagementservice.infrastructure.adapter.in;
 
 import com.maza.peoplemanagementservice.application.service.CustomerService;
+import com.maza.peoplemanagementservice.application.usecases.CustomerUseCase;
 import com.maza.peoplemanagementservice.domain.dto.CustomerDTO;
 import com.maza.peoplemanagementservice.domain.dto.request.CustomerRequestDTO;
 import com.maza.peoplemanagementservice.infrastructure.util.ResponseObject;
@@ -20,36 +21,36 @@ import java.util.List;
 @Slf4j
 @Api(tags = "CustomerController", description = "Operations related to customers")
 public class CustomerController {
-    private CustomerService customerService;
+    private CustomerUseCase customerUseCase;
 
     @Autowired
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
+    public CustomerController(CustomerUseCase customerService) {
+        this.customerUseCase = customerService;
     }
 
     @GetMapping
     @ApiOperation(value = "getCustomers", notes = "List a register customers")
     public ResponseEntity<List<CustomerDTO>> getCustomers(){
-        return ResponseEntity.ok(customerService.findAll());
+        return ResponseEntity.ok(customerUseCase.findAll());
     }
     @PostMapping
     @ApiOperation(value = "createCustomer", notes = "Register a new customer")
     public ResponseEntity<ResponseObject> createCustomer(@Valid @RequestBody CustomerRequestDTO customerRequestDTO){
         log.info("Trama de entrada crear cliente: {}",customerRequestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseObject("ok","Customer created sucesfully",customerService.save(customerRequestDTO)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseObject("ok","Customer created sucesfully",customerUseCase.save(customerRequestDTO)));
     }
     @PutMapping("/{id}")
     @ApiOperation(value = "updateCustomer", notes = "Update customer by Id")
     public ResponseEntity<ResponseObject> updateCustomer(@Valid @PathVariable Long id, @RequestBody CustomerRequestDTO customerRequestDTO) {
         log.info("Id de persona a actualizar: {}",id);
-        return ResponseEntity.ok(new ResponseObject("ok","Customer updated sucesfully", customerService.update(id,customerRequestDTO)));
+        return ResponseEntity.ok(new ResponseObject("ok","Customer updated sucesfully", customerUseCase.update(id,customerRequestDTO)));
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "deleteCustomer", notes = "Delete customer by Id")
     public  ResponseEntity<ResponseObject> deleteCustomer(@PathVariable Long id){
         log.info("Id de persona a eliminar: {}",id);
-        customerService.deleteById(id);
+        customerUseCase.deleteById(id);
         return ResponseEntity.ok(new ResponseObject("ok","Customer deleted sucesfully", ""));
 
     }
@@ -57,7 +58,7 @@ public class CustomerController {
     @ApiOperation(value = "findClienByIdCard", notes = "Find client by Id Number")
     public CustomerDTO findClienById(@RequestParam String id){
         log.info("Buscar persona por cedula {}",id);
-        return  customerService.findByIdentification(id);
+        return  customerUseCase.findByIdentification(id);
     }
     @PostMapping("/statments")
     @ApiOperation(value = "statments", notes = "Send message to kafka provider")

@@ -3,6 +3,7 @@ package com.maza.peoplemanagementservice.infrastructure.util;
 import com.fasterxml.jackson.core.JsonParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -60,12 +61,12 @@ public abstract class AbstractExceptionHandler {
         ResponseObject responseObject = new ResponseObject("error", errorMessage, "");
         return new ResponseEntity<>(responseObject, HttpStatus.NO_CONTENT);
     }
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ResponseObject> handleUserException(Exception ex) {
-        String errorMessage = ex.getMessage();
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ResponseObject> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        String errorMessage = ex.getCause().getLocalizedMessage();
         ResponseObject responseObject = new ResponseObject("error", errorMessage, "");
         return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
     }
-
 }
 

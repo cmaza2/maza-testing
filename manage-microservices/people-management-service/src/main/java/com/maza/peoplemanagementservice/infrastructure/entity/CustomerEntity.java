@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "tcustomers")
-@PrimaryKeyJoinColumn(referencedColumnName = "idPerson")
-public class CustomerEntity extends PersonEntity {
 
+public class CustomerEntity extends PersonEntity {
+    @PrimaryKeyJoinColumn(referencedColumnName = "idPerson")
     Long idCustomer;
     @Column(nullable = false)
     private String password;
