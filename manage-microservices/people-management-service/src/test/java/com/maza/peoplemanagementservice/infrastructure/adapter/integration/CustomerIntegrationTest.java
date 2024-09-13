@@ -2,7 +2,6 @@ package com.maza.peoplemanagementservice.infrastructure.adapter.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maza.peoplemanagementservice.domain.dto.request.CustomerRequestDTO;
-import com.maza.peoplemanagementservice.domain.dto.request.Gender;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -52,7 +51,7 @@ class CustomerIntegrationTest extends SetupDockerContainerTest{
         customer.setAddress("Catacocha");
         customer.setPhone("091011121");
         customer.setIdCard("1105060772");
-        customer.setGender(Gender.MASCULINO);
+        customer.setGender("Masculino");
         return customer;
     }
 }

@@ -8,13 +8,16 @@ import com.maza.peoplemanagementservice.domain.dto.CustomerDTO;
 import com.maza.peoplemanagementservice.domain.dto.request.CustomerRequestDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class CustomerService implements CustomerUseCase {
+public class CustomerService implements CustomerUseCase, UserDetailsService {
 
     private final CustomerPersistencePort customerPersistencePort;
     private final CustomerRequestMapper customerRequestMapper;
@@ -119,5 +122,12 @@ public class CustomerService implements CustomerUseCase {
         var customerResponseDTO = customerDtoMapper.toDto(customer);
         log.info("Trama de respuesta buscar persona por identificacion {} : {}",idNumber,customerResponseDTO);
         return customerResponseDTO;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        var customer = customerPersistencePort.findByIdentification(username);
+        var customerResponseDTO = customerDtoMapper.toDto(customer);
+        return new UserDetailImpl(customerResponseDTO);
     }
 }

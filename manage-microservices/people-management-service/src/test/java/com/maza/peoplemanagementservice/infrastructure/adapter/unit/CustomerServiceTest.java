@@ -1,6 +1,5 @@
 package com.maza.peoplemanagementservice.infrastructure.adapter.unit;
 
-import com.maza.peoplemanagementservice.domain.dto.request.Gender;
 import com.maza.peoplemanagementservice.infrastructure.adapter.repository.CustomerRepository;
 import com.maza.peoplemanagementservice.infrastructure.entity.CustomerEntity;
 import org.junit.jupiter.api.Test;
@@ -46,7 +45,7 @@ class CustomerServiceTest {
             customerA.setPhone("091011121"+i);
             customerA.setIdCard("110405069"+i);
             customerA.setIdCustomer(Long.valueOf(i+1));
-            customerA.setGender(Gender.MASCULINO);
+            customerA.setGender("Masculino");
             lstCustomer.add(customerA);
         }
         return lstCustomer;

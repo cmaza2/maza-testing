@@ -8,8 +8,8 @@ public class CustomerRequestDTO {
     @NotBlank(message = "The name is required")
     @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "The name must only contain letters and spaces")
     private String name;
-    @NotNull(message = "Gender is required")
-    private Gender gender;
+    @Pattern(regexp = "^(MASCULINO|FEMENINO)$", message = "Gender must be either 'MASCULINO' or 'FEMENINO'")
+    private String gender;
     @Min(value = 16, message = "The age must be 16 or higger")
     private int age;
     @Pattern(regexp = "^[0-9]+$", message = "The id card must only contain numbers")
@@ -26,11 +26,4 @@ public class CustomerRequestDTO {
 
     private boolean status;
 
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGenero(Gender gender) {
-        this.gender = gender;
-    }
 }

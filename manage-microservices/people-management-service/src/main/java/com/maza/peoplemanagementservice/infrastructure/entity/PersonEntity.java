@@ -1,6 +1,5 @@
 package com.maza.peoplemanagementservice.infrastructure.entity;
 
-import com.maza.peoplemanagementservice.domain.dto.request.Gender;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,8 +15,7 @@ public class PersonEntity {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private String gender;
     @Column(nullable = false)
     private int age;
     @Column(nullable = false,unique = true,length = 10)

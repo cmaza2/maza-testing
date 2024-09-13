@@ -1,6 +1,5 @@
 package com.maza.peoplemanagementservice.infrastructure.adapter.in;
 
-import com.maza.peoplemanagementservice.application.service.CustomerService;
 import com.maza.peoplemanagementservice.application.usecases.CustomerUseCase;
 import com.maza.peoplemanagementservice.domain.dto.CustomerDTO;
 import com.maza.peoplemanagementservice.domain.dto.request.CustomerRequestDTO;
